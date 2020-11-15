@@ -7,25 +7,54 @@ import {
   Text,
   View,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 const {width, height} = Dimensions.get('window');
 const cols = 2, rows = 2;
 
-export default function MoviePoster(props) {
-  const {onPress, movie, movie: {title, category, imageUrl}} = props;
+interface Props {
+  onPress: any,
+  movie: {
+    title: string,
+    category: {
+      title: string,
+    },
+    imageUrl: string
+  }
+}
+
+const propTypes = {
+  onPress: PropTypes.func,
+  movie: PropTypes.object,
+}
+
+const defaultProps = {
+  onPress: () => console.log('onPress'),
+  movie: {
+    title: 'movie',
+    category: {
+      title: 'title',
+    },
+    imageUrl: 'https://picsum.photos/400/500'
+  }
+}
+
+export default function MoviePoster(props: Props) {
+  const {onPress, movie: {title, category, imageUrl}} = props;
+  const {container, genre,image, imageContainer, titles} = styles;
   return (
-    <TouchableOpacity
-      onPress={onPress && onPress()}
-      style={styles.container}
-    >
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{uri: imageUrl}} />
+    <TouchableOpacity onPress={onPress} style={container}>
+      <View style={imageContainer}>
+        <Image style={image} source={{uri: imageUrl}} />
       </View>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.genre}>{category.title}</Text>
+      <Text style={titles}>{title}</Text>
+      <Text style={genre}>{category.title}</Text>
     </TouchableOpacity>
   )
 }
+
+MoviePoster.propTypes = propTypes
+MoviePoster.defaultProps = defaultProps
 
 const styles = StyleSheet.create({
   container: {
@@ -46,7 +75,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
   },
-  title: {
+  titles: {
     fontSize: 14,
     marginTop: 4,
   },
