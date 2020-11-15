@@ -81,9 +81,9 @@ export default function HomeScreen(props: Props) {
       <FlatList
         contentContainerStyle={styles.scrollContent}
         data={data.feed}
-        keyExtractor={item => item.title}
+        keyExtractor={({title}) => title}
         numColumns={2}
-        ListEmptyComponent={(genres && categoryId) && <View style={styles.noResults}>No Results for {genres?.categories[categoryId - 1].title}</View>}
+        ListEmptyComponent={(genres && categoryId) && <View style={styles.noResults}>No results with genre: "{genres?.categories[categoryId - 1].title}" found</View>}
         renderItem={({ item }) => <MoviePoster movie={item} onPress={() => navigation.navigate('Detail', { movie: item }) } />}
       />
     </View>
@@ -92,13 +92,13 @@ export default function HomeScreen(props: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    flex: 1,
   },
   noResults: {
     alignItems: 'center',
-    margin: 'auto',
     justifyContent: 'center',
+    margin: 'auto',
   },
   scrollContent: {
     flex: 1,
