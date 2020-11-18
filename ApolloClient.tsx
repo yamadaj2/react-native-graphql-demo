@@ -7,8 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const BASE_URL = 'http://localhost:4000/graphql';
 
 const httpLink = new HttpLink({
-  uri: BASE_URL,
   credentials: 'include',
+  uri: BASE_URL,
 })
 
 const request = async (operation: any) => {
