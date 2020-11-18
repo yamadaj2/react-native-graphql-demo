@@ -9,6 +9,43 @@ import {
 } from 'react-native';
 import RoundedButton from '../components/RoundedButtons';
 import {Ionicons} from '@expo/vector-icons';
+import {useQuery, useMutation} from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+const PROFILE_QUERY = gql`
+    query {
+        currentUser {
+            id
+            username
+            email
+            votes {
+                id
+                movie {
+                    id
+                    title
+                    imageUrl
+                    description
+                    category {
+                        id
+                        title
+                    }
+                }
+            }
+        }
+    }
+`;
+
+const ADD_VOTE = gql`
+    mutation AddVote($movieId: ID!) {
+        addVote(movieId: $movieId)
+    }
+`;
+
+const REMOVE_VOTE = gql`
+    mutation RemoveVote ($movieId: ID!) {
+        removeVote(movieId: $movieId)
+    }
+`;
 
 const {width} = Dimensions.get('window');
 interface Props {
@@ -28,10 +65,14 @@ interface Props {
 }
 
 export default function Detail({route }: Props) {
+  const {data, refetch} = useQuery(PROFILE_QUERY);
+  const [addVote] = useMutation(ADD_VOTE);
+  const [removeVote] = useMutation(REMOVE_VOTE);
+
   const { params } = route;
   const { movie } = params;
-  const {title, description, imageUrl, category} = movie;
-  const isFavorite = false;
+  const {id, title, description, imageUrl, category} = movie;
+  const isFavorite = data?.currentUser?.votes && data?.currentUser?.votes.find(vote => vote.movie.id === id);
   const primaryColor = isFavorite ? 'rgba(25, 148, 214, 1)' : '#fff';
   const secondaryColor = isFavorite ? '#fff' : 'rgba(75, 148, 214, 1)';
   const saveString = isFavorite ? 'Remove Vote' : 'Add Vote';
@@ -47,7 +88,17 @@ export default function Detail({route }: Props) {
           text={saveString}
           textColor={primaryColor}
           backgroundColor={secondaryColor}
-          onPress={() => console.log('pressed')}
+          onPress={() => {
+            if (isFavorite) {
+              removeVote({variables: {movieId: id}})
+                .then(() => refetch())
+                .catch(e => console.error(e))
+            } else {
+              addVote({variables: {movieId: id}})
+                .then(() => refetch())
+                .catch(e => console.error(e))
+            }
+          }}
           icon={
             <Ionicons
               name='md-checkmark-circle'
