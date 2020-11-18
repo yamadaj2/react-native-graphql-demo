@@ -7,9 +7,7 @@ import {
 } from 'react-native';
 
 export default function AuthLoadingScreen({navigation}) {
-  useEffect(() => {
-    bootstrapAsync()
-  }, [])
+  useEffect(() => { bootstrapAsync() }, [])
 
   const bootstrapAsync = async () => {
     const userToken = await AsyncStorage.getItem('token');

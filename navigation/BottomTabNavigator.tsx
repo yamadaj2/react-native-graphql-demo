@@ -5,13 +5,15 @@ import * as React from 'react';
 import Colors, {lightBlack} from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { BottomTabParamList } from '../types';
-import HomeScreen from "../screens/HomeScreen";
-import {createStackNavigator} from "@react-navigation/stack";
-import LoginScreen from "../screens/LoginScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useEffect} from "react";
-import AuthLoading from "../screens/AuthLoading";
+import HomeScreen from '../screens/HomeScreen';
+import {createStackNavigator} from '@react-navigation/stack';
+import LoginScreen from '../screens/LoginScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useEffect} from 'react';
+import AuthLoading from '../screens/AuthLoading';
+import {useQuery} from "@apollo/react-hooks";
+import {PROFILE_QUERY} from "../graphql/authQuery";
 
 const Stack = createStackNavigator()
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -63,24 +65,28 @@ const ProfileStack = () => {
 
 export default function BottomTabNavigator({navigation}) {
   const colorScheme = useColorScheme();
-  useEffect(() => navigation?.setOptions({headerShown: false}), [])
+  useEffect(() => navigation?.setOptions({headerShown: false}), []);
+
+  const {data: currentUser} = useQuery(PROFILE_QUERY, {
+    fetchPolicy: 'network-only',
+  });
 
   return (
-    <BottomTab.Navigator tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+    <BottomTab.Navigator tabBarOptions={{activeTintColor: Colors[colorScheme].tint}}>
       <BottomTab.Screen
         name='Profile'
         component={ProfileStack}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name='md-person' color={color} />,
-        }}
+        options={{tabBarIcon: ({color}) => <TabBarIcon name='md-person' color={color}/>}}
       />
-      <BottomTab.Screen
-        name='Movies'
-        component={HomeStack}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name='md-film' color={color} />,
-        }}
-      />
+
+      {
+        currentUser &&
+        <BottomTab.Screen
+          name='Movies'
+          component={HomeStack}
+          options={{tabBarIcon: ({color}) => <TabBarIcon name='md-film' color={color}/>}}
+        />
+      }
     </BottomTab.Navigator>
   );
 }
