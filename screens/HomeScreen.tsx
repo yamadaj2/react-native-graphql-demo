@@ -12,6 +12,7 @@ interface Props {
 
 import MoviePoster from '../components/MoviePoster';
 import {useState} from "react";
+import {white} from "../constants/Colors";
 
 const FEED_QUERY = gql`
     query Feed($categoryId: ID) {
@@ -92,7 +93,7 @@ export default function HomeScreen(props: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: white,
     flex: 1,
   },
   noResults: {

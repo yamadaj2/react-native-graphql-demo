@@ -3,6 +3,7 @@ import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { RootStackParamList } from '../types';
+import {white} from "../constants/Colors";
 
 export default function NotFoundScreen({
   navigation,
@@ -20,7 +21,7 @@ export default function NotFoundScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: white,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,

@@ -9,6 +9,7 @@ import {
 import MoviePoster from '../components/MoviePoster';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import {white} from '../constants/Colors';
 
 const PROFILE_QUERY = gql`
     query {
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff'
+    backgroundColor: white,
   },
   noResults: {
     justifyContent: 'center',

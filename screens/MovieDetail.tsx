@@ -11,6 +11,7 @@ import RoundedButton from '../components/RoundedButtons';
 import {Ionicons} from '@expo/vector-icons';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import {lightBlack, themeBlue, white} from '../constants/Colors';
 
 const PROFILE_QUERY = gql`
     query {
@@ -73,8 +74,8 @@ export default function Detail({route }: Props) {
   const { movie } = params;
   const {id, title, description, imageUrl, category} = movie;
   const isFavorite = data?.currentUser?.votes && data?.currentUser?.votes.find(vote => vote.movie.id === id);
-  const primaryColor = isFavorite ? 'rgba(25, 148, 214, 1)' : '#fff';
-  const secondaryColor = isFavorite ? '#fff' : 'rgba(75, 148, 214, 1)';
+  const primaryColor = isFavorite ? themeBlue : white;
+  const secondaryColor = isFavorite ? white : themeBlue;
   const saveString = isFavorite ? 'Remove Vote' : 'Add Vote';
 
   return (
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     zIndex: 8,
   },
   stat: {
-    color: '#161616',
+    color: lightBlack,
     fontSize: 16,
     fontWeight: '700',
   },
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 24,
-    color: '#161616',
+    color: lightBlack,
     paddingBottom: 15,
   },
 })

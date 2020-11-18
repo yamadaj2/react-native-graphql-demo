@@ -5,6 +5,7 @@ import {useMutation} from '@apollo/react-hooks';
 import {Ionicons} from '@expo/vector-icons';
 import gql from 'graphql-tag';
 import RoundedButton from '../components/RoundedButtons';
+import {lightBlack, themeBlue, white} from '../constants/Colors';
 
 const {width} = Dimensions.get('window');
 
@@ -69,7 +70,7 @@ export default function LoginScreen({ navigation } : any) {
               onChange={({target: {value}}) => setUsername(value)}
               value={username}
               placeholder='Username'
-              placeholderTextColor='#161616'
+              placeholderTextColor={lightBlack}
               autoCorrect={false}
               autoCapitalize='none'
               style={styles.input}
@@ -82,7 +83,7 @@ export default function LoginScreen({ navigation } : any) {
             onChange={({target: {value}}) => setEmail(value)}
             value={email}
             placeholder={login ? 'Email/Username' : 'Email'}
-            placeholderTextColor='#161616'
+            placeholderTextColor={lightBlack}
             autoCorrect={false}
             autoCapitalize='none'
             style={styles.input}
@@ -94,7 +95,7 @@ export default function LoginScreen({ navigation } : any) {
             onChange={({target: {value}}) => setPassword(value)}
             value={password}
             placeholder='Password'
-            placeholderTextColor='#161616'
+            placeholderTextColor={lightBlack}
             autoCorrect={false}
             autoCapitalize='none'
             secureTextEntry
@@ -104,9 +105,9 @@ export default function LoginScreen({ navigation } : any) {
         <View style={styles.buttonContainer}>
           <RoundedButton
             text={login ? 'Login' : 'Sign Up'}
-            icon={<Ionicons name='md-checkmark-circle' size={20} color='#fff' style={styles.saveIcon}/>}
-            textColor='#fff'
-            backgroundColor='rgba(75, 148, 214, 1)'
+            icon={<Ionicons name='md-checkmark-circle' size={20} color={white} style={styles.saveIcon}/>}
+            textColor={white}
+            backgroundColor={themeBlue}
             onPress={() => {
               if (login) {
                 const isEmail = email?.includes('@');
@@ -120,8 +121,8 @@ export default function LoginScreen({ navigation } : any) {
           <RoundedButton
             text={login ? 'Need an account ? Sign Up' : 'Have an account? Log In'}
             icon={<Ionicons name='md-information-circle' size={20} color='rgba(75, 148, 214, 1)' style={styles.saveIcon} />}
-            textColor='rgba(75, 148, 214, 1)'
-            backgroundColor='#fff'
+            textColor={themeBlue}
+            backgroundColor={white}
             onPress={() => setLogin(!login)}
           />
         </View>
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 15,
-    backgroundColor: '#fff',
+    backgroundColor: white,
   },
   buttonContainer: {
     marginTop: 30,

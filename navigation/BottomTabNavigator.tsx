@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
-import Colors from '../constants/Colors';
+import Colors, {lightBlack} from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { BottomTabParamList } from '../types';
 import HomeScreen from "../screens/HomeScreen";
@@ -45,7 +45,7 @@ const ProfileStack = () => {
         options={({navigation}) => ({
           headerLeft: () => (
             <Ionicons
-              color='#161616'
+              color={lightBlack}
               name='md-exit'
               onPress={async () => {
                 await AsyncStorage.removeItem('token');

@@ -5,13 +5,14 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
+import {lightBlack, themeBlue, white} from '../constants/Colors';
 
 export default function Tag(props) {
   const {title, onPress, selected} = props;
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={[styles.tag, {backgroundColor: selected ? 'rgba(75, 148, 214, 1)' : '#fff' }]} onPress={onPress}>
-        <Text style={[styles.title, {color: selected ? '#fff' : '#161616' }]}>
+      <TouchableOpacity style={[styles.tag, {backgroundColor: selected ? themeBlue : white }]} onPress={onPress}>
+        <Text style={[styles.title, {color: selected ? white : lightBlack }]}>
           {title}
         </Text>
       </TouchableOpacity>
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
   },
   title: {
-    color: '#161616',
+    color: lightBlack,
     fontSize: 18,
     fontWeight: 'normal',
   }
