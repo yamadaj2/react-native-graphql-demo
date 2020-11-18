@@ -38,7 +38,7 @@ const CATEGORY_QUERY = gql`
 `
 
 export default function HomeScreen(props: Props) {
-  const [categoryId, setCategoryId] = useState(4);
+  const [categoryId, setCategoryId] = useState(0);
   const {data, refetch, error, loading} = useQuery(FEED_QUERY, {
     variables: categoryId ? {categoryId}: {},
     fetchPolicy: 'cache-and-network',
@@ -83,7 +83,7 @@ export default function HomeScreen(props: Props) {
         data={data.feed}
         keyExtractor={({title}) => title}
         numColumns={2}
-        ListEmptyComponent={(genres && categoryId) && <View style={styles.noResults}>No results with genre: "{genres?.categories[categoryId - 1].title}" found</View>}
+        ListEmptyComponent={(genres && categoryId) && <View style={styles.noResults}>No results with genre: "{genres?.categories[categoryId - 1]?.title}" found</View>}
         renderItem={({ item }) => <MoviePoster movie={item} onPress={() => navigation.navigate('Detail', { movie: item }) } />}
       />
     </View>
