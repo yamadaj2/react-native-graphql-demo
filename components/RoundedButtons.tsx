@@ -6,7 +6,7 @@ export default function RoundedButton(props: {text: String, icon: String, textCo
   const color: any = textColor || 'white';
   return (
     <TouchableOpacity
-      onPress={() => onPress && onPress()}
+      onPress={onPress}
       style={[styles.wrapper, { backgroundColor: backgroundColor || 'transparent' }]}
     >
       <View style={styles.buttonTextWrapper}>

@@ -10,7 +10,7 @@ export default function Tag(props) {
   const {title, onPress, selected} = props;
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={[styles.tag, {backgroundColor: selected ? 'rgba(75, 148, 214, 1)' : '#fff' }]} onPress={() => onPress && onPress()}>
+      <TouchableOpacity style={[styles.tag, {backgroundColor: selected ? 'rgba(75, 148, 214, 1)' : '#fff' }]} onPress={onPress}>
         <Text style={[styles.title, {color: selected ? '#fff' : '#161616' }]}>
           {title}
         </Text>
