@@ -1,132 +1,24 @@
 import React, {useState} from 'react';
-import {Dimensions, StyleSheet, Text, TextInput, View,} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useMutation} from '@apollo/react-hooks';
-import {Ionicons} from '@expo/vector-icons';
-import gql from 'graphql-tag';
+import {Dimensions, StyleSheet, View,} from 'react-native';
 import RoundedButton from '../components/RoundedButtons';
-import {lightBlack, themeBlue, white} from '../constants/Colors';
+import {themeBlue, white} from '../constants/Colors';
+import SignUpForm from '../components/auth/SignUpForm';
+import LoginForm from '../components/auth/LoginForm';
 
 const {width} = Dimensions.get('window');
 
-const SIGN_UP_MUTATION  = gql`
-    mutation SignUp($username:String!, $email:String!, $password:String!){
-        signUp(username: $username, email: $email, password: $password) {
-            user {
-                id
-                username
-                email
-            }
-            token
-        }
-    }
-`;
-
-const SIGN_IN_MUTATION = gql`
-    mutation SignIn($username:String, $email:String, $password:String!) {
-        signIn(email:$email, username:$username, password:$password) {
-            user {
-                id
-                username
-                email
-            }
-            token
-        }
-    }
-`;
-
-export default function LoginScreen({ navigation } : any) {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function LoginScreen({navigation}) {
   const [login, setLogin] = useState(false);
-
-  const [signIn] = useMutation(SIGN_IN_MUTATION, {
-    async onCompleted({signIn}) {
-      const {token} = signIn;
-      try {
-        await AsyncStorage.setItem('token', token);
-        navigation.replace('Profile')
-      } catch (e) { console.error(e) }
-    }
-  });
-
-  const [signUp] = useMutation(SIGN_UP_MUTATION, {
-    async onCompleted({signUp}) {
-      const {token} = signUp;
-      try {
-        await AsyncStorage.setItem('token', token);
-        navigation.replace('Profile')
-      } catch (e) { console.error(e) }
-    }
-  });
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        {!login && (
-          <View>
-            <TextInput
-              onChange={({target: {value}}) => setUsername(value)}
-              value={username}
-              placeholder='Username'
-              placeholderTextColor={lightBlack}
-              autoCorrect={false}
-              autoCapitalize='none'
-              style={styles.input}
-            />
-          </View>
-        )}
-
-        <View>
-          <TextInput
-            onChange={({target: {value}}) => setEmail(value)}
-            value={email}
-            placeholder={login ? 'Email/Username' : 'Email'}
-            placeholderTextColor={lightBlack}
-            autoCorrect={false}
-            autoCapitalize='none'
-            style={styles.input}
-          />
-        </View>
-
-        <View>
-          <TextInput
-            onChange={({target: {value}}) => setPassword(value)}
-            value={password}
-            placeholder='Password'
-            placeholderTextColor={lightBlack}
-            autoCorrect={false}
-            autoCapitalize='none'
-            secureTextEntry
-            style={styles.input}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <RoundedButton
-            text={login ? 'Login' : 'Sign Up'}
-            icon={<Ionicons name='md-checkmark-circle' size={20} color={white} style={styles.saveIcon}/>}
-            textColor={white}
-            backgroundColor={themeBlue}
-            onPress={() => {
-              if (login) {
-                const isEmail = email?.includes('@');
-                isEmail ? signIn({variables: {email, password}}) : signIn({variables: {email, username, password}})
-              } else {
-                signUp({variables: {username, email, password}})
-              }
-            }}
-          />
-
-          <RoundedButton
-            text={login ? 'Need an account ? Sign Up' : 'Have an account? Log In'}
-            icon={<Ionicons name='md-information-circle' size={20} color='rgba(75, 148, 214, 1)' style={styles.saveIcon} />}
-            textColor={themeBlue}
-            backgroundColor={white}
-            onPress={() => setLogin(!login)}
-          />
-        </View>
-      </View>
+      {login ? <SignUpForm navigation={navigation} /> : <LoginForm navigation={navigation}/> }
+      <RoundedButton
+        backgroundColor={white}
+        onPress={() => setLogin(!login)}
+        text={login ? 'Have an account? Log In' : 'Need an account? Sign Up'}
+        textColor={themeBlue}
+      />
     </View>
   )
 }
