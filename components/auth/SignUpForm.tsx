@@ -38,36 +38,34 @@ export default function SignUpForm({ navigation } : any) {
 
   return (
     <View>
-      <View>
-        <TextInput
-          onChange={({target: {value}}) => setUsername(value)}
-          value={username}
-          placeholder='Username'
-          placeholderTextColor={lightBlack}
-          autoCorrect={false}
-          autoCapitalize='none'
-          style={styles.input}
-        />
-        <TextInput
-          onChange={({target: {value}}) => setEmail(value)}
-          value={email}
-          placeholder='Email'
-          placeholderTextColor={lightBlack}
-          autoCorrect={false}
-          autoCapitalize='none'
-          style={styles.input}
-        />
-        <TextInput
-          onChange={({target: {value}}) => setPassword(value)}
-          value={password}
-          placeholder='Password'
-          placeholderTextColor={lightBlack}
-          autoCorrect={false}
-          autoCapitalize='none'
-          secureTextEntry
-          style={styles.input}
-        />
-      </View>
+      <TextInput
+        onChange={({target: {value}}) => setUsername(value)}
+        value={username}
+        placeholder='Username'
+        placeholderTextColor={lightBlack}
+        autoCorrect={false}
+        autoCapitalize='none'
+        style={styles.input}
+      />
+      <TextInput
+        onChange={({target: {value}}) => setEmail(value)}
+        value={email}
+        placeholder='Email'
+        placeholderTextColor={lightBlack}
+        autoCorrect={false}
+        autoCapitalize='none'
+        style={styles.input}
+      />
+      <TextInput
+        onChange={({target: {value}}) => setPassword(value)}
+        value={password}
+        placeholder='Password'
+        placeholderTextColor={lightBlack}
+        autoCorrect={false}
+        autoCapitalize='none'
+        secureTextEntry
+        style={styles.input}
+      />
       <View style={styles.buttonContainer}>
         <RoundedButton
           text='Sign Up'
