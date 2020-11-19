@@ -25,11 +25,16 @@ export default function SignUpForm({ navigation } : any) {
     }
   });
 
-  const handleSignUp = () =>
-    signUp({variables: {username, email, password}})
-      .catch(({message}) => {
-        showMessage({message, type: 'danger'})
-      })
+  const handleSignUp = () => {
+    if (username && email && password) {
+      signUp({variables: {username, email, password}})
+        .catch(({message}) => {
+          showMessage({message, type: 'danger'})
+        })
+    } else {
+      showMessage({message: 'Ensure all fields are filled out', type: 'danger'})
+    }
+  }
 
   return (
     <View>
