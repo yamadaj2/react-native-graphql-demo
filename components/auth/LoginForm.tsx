@@ -12,7 +12,7 @@ const {width} = Dimensions.get('window');
 
 export default function LoginForm({ navigation } : any) {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const [nameCredentials, setNameCredentials] = useState('');
   const [password, setPassword] = useState('');
 
   const [signIn] = useMutation(SIGN_IN_MUTATION, {
@@ -26,8 +26,8 @@ export default function LoginForm({ navigation } : any) {
   });
 
   const handleLogin = () => {
-    const isEmail = email?.includes('@');
-    const params = isEmail ? {email, password} : {username, password};
+    const isEmail = nameCredentials?.includes('@');
+    const params = isEmail ? {email: nameCredentials, password} : {username: nameCredentials, password};
 
     signIn({variables: params}).catch(({message}) => {
       showMessage({message, type: 'danger'})
@@ -38,8 +38,8 @@ export default function LoginForm({ navigation } : any) {
     <View style={styles.inputContainer}>
       <View>
         <TextInput
-          onChange={({target: {value}}) => setEmail(value)}
-          value={email}
+          onChange={({target: {value}}) => setNameCredentials(value)}
+          value={nameCredentials}
           placeholder='Email/Username'
           placeholderTextColor={lightBlack}
           autoCorrect={false}
