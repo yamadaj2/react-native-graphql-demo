@@ -28,9 +28,7 @@ export default function SignUpForm({ navigation } : any) {
   const handleSignUp = () => {
     if (username && email && password) {
       signUp({variables: {username, email, password}})
-        .catch(({message}) => {
-          showMessage({message, type: 'danger'})
-        })
+        .catch(({message}) => showMessage({message, type: 'danger'}))
     } else {
       showMessage({message: 'Ensure all fields are filled out', type: 'danger'})
     }

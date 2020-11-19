@@ -8,54 +8,39 @@ import {
 } from 'react-native';
 import MoviePoster from '../components/MoviePoster';
 import {useQuery} from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import {white} from '../constants/Colors';
-
-const PROFILE_QUERY = gql`
-    query {
-        currentUser {
-            id
-            votes {
-                id
-                movie {
-                    id
-                    title
-                    imageUrl
-                    description
-                    category {
-                        title
-                    }
-                }
-            }
-        }
-    }
-`;
+import {showMessage} from 'react-native-flash-message';
+import {PROFILE_QUERY} from '../graphql/authQuery';
 
 export default function ProfileScreen({navigation}) {
   const {data, loading, error} = useQuery(PROFILE_QUERY, {
-    //latest data only
     fetchPolicy: 'network-only',
   })
+  if (loading) return <ActivityIndicator style={{...StyleSheet.absoluteFillObject}} />
+  if (error) {
+    showMessage({message: error.message, type: 'danger'})
+    return
+  }
+  if (!data || !data.currentUser) return <Text style={{textAlign: 'center'}}>No Data</Text>;
 
-  if (!data || !data.currentUser) return <ActivityIndicator style={{...StyleSheet.absoluteFillObject}} />
 
-  const {currentUser} = data;
-  const {username, email, votes} = currentUser;
+  const {currentUser: {email, votes}} = data;
   return (
     <View style={styles.container}>
-      {votes?.length > 0 ? (
-          <FlatList
-            data={votes}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
-            renderItem={({item: {movie}}) => <MoviePoster onPress={() => navigation.navigate('Detail', {movie})} movie={movie}/> }
-          />
-        ) :
-        <View>
-          <Text style={styles.noResults}>
-            No Votes Yet
-          </Text>
-        </View>
+      <View style={styles.userDetails}>
+        <Text>{email}</Text>
+      </View>
+      {votes?.length > 0 ?
+        <FlatList
+          data={votes}
+          keyExtractor={(item, index) => index.toString()}
+          numColumns={2}
+          renderItem={({item: {movie}}) => <MoviePoster onPress={() => navigation.navigate('Detail', {movie})} movie={movie}/> }
+        />
+        :
+        <Text style={styles.noResults}>
+          No Votes Yet
+        </Text>
       }
     </View>
   )
@@ -68,8 +53,14 @@ const styles = StyleSheet.create({
     backgroundColor: white,
   },
   noResults: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    textAlign: 'center',
+  },
+  userDetails: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingBottom: 15,
   },
   saveIcon: {
     position: 'relative',

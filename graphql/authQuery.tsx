@@ -4,6 +4,8 @@ export const PROFILE_QUERY = gql`
     query {
         currentUser {
             id
+            username
+            email
             votes {
                 id
                 movie {
