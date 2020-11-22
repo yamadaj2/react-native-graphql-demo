@@ -10,12 +10,10 @@ import MoviePoster from '../components/MoviePoster';
 import {useQuery} from '@apollo/react-hooks';
 import {white} from '../constants/Colors';
 import {showMessage} from 'react-native-flash-message';
-import {PROFILE_QUERY} from '../graphql/authQuery';
+import {PROFILE_QUERY} from '../graphql/auth/authQuery';
 
 export default function ProfileScreen({navigation}) {
-  const {data, loading, error} = useQuery(PROFILE_QUERY, {
-    fetchPolicy: 'network-only',
-  })
+  const {data, loading, error} = useQuery(PROFILE_QUERY, {fetchPolicy: 'network-only'})
   if (loading) return <ActivityIndicator style={{...StyleSheet.absoluteFillObject}} />
   if (error) {
     showMessage({message: error.message, type: 'danger'})
@@ -35,7 +33,7 @@ export default function ProfileScreen({navigation}) {
           data={votes}
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
-          renderItem={({item: {movie}}) => <MoviePoster onPress={() => navigation.navigate('Detail', {movie})} movie={movie}/> }
+          renderItem={({item: {movie}}) => <MoviePoster movie={movie} onPress={() => navigation.navigate('Detail', {movie})} /> }
         />
         :
         <Text style={styles.noResults}>

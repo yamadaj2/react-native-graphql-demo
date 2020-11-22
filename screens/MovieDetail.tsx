@@ -10,43 +10,10 @@ import {
 import RoundedButton from '../components/RoundedButtons';
 import {Ionicons} from '@expo/vector-icons';
 import {useQuery, useMutation} from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import {lightBlack, themeBlue, white} from '../constants/Colors';
-
-const PROFILE_QUERY = gql`
-    query {
-        currentUser {
-            id
-            username
-            email
-            votes {
-                id
-                movie {
-                    id
-                    title
-                    imageUrl
-                    description
-                    category {
-                        id
-                        title
-                    }
-                }
-            }
-        }
-    }
-`;
-
-const ADD_VOTE = gql`
-    mutation AddVote($movieId: ID!) {
-        addVote(movieId: $movieId)
-    }
-`;
-
-const REMOVE_VOTE = gql`
-    mutation RemoveVote ($movieId: ID!) {
-        removeVote(movieId: $movieId)
-    }
-`;
+import {PROFILE_QUERY} from '../graphql/auth/authQuery';
+import {ADD_VOTE, REMOVE_VOTE} from '../graphql/votes/voteMutations';
+import {showMessage} from 'react-native-flash-message';
 
 const {width} = Dimensions.get('window');
 interface Props {
@@ -54,10 +21,12 @@ interface Props {
   route: {
     params: {
       movie: {
+        id: Number,
         title: String,
         description: String,
         imageUrl: String,
         category: {
+          id: Number,
           title: String,
         }
       }
@@ -66,17 +35,35 @@ interface Props {
 }
 
 export default function Detail({route }: Props) {
-  const {data, refetch} = useQuery(PROFILE_QUERY);
+  const {data, refetch, loading} = useQuery(PROFILE_QUERY);
   const [addVote] = useMutation(ADD_VOTE);
   const [removeVote] = useMutation(REMOVE_VOTE);
 
-  const { params } = route;
-  const { movie } = params;
-  const {id, title, description, imageUrl, category} = movie;
-  const isFavorite = data?.currentUser?.votes && data?.currentUser?.votes.find(vote => vote.movie.id === id);
+  const {params: {movie: {id, title, description, imageUrl, category}}} = route;
+
+  const isFavorite = !!(data?.currentUser?.votes.find(({movie}) => movie.id === id))
+
   const primaryColor = isFavorite ? themeBlue : white;
   const secondaryColor = isFavorite ? white : themeBlue;
-  const saveString = isFavorite ? 'Remove Vote' : 'Add Vote';
+  const submitText = `${isFavorite ? 'Remove' : 'Add'} Vote`;
+
+  const toggleVote = () => {
+    const params = {variables: {movieId: id}};
+    const errorMessage = e => {
+      console.error(e)
+      showMessage({message: 'Something went wrong', type: 'danger'})
+    }
+
+    if (isFavorite) {
+      removeVote(params)
+        .then(() => refetch())
+        .catch(e => errorMessage(e))
+    } else {
+      addVote(params)
+        .then(() => refetch())
+        .catch(e => errorMessage(e))
+    }
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -85,30 +72,23 @@ export default function Detail({route }: Props) {
         <Text numberOfLines={2} style={[styles.text, {textAlign: 'center'}]}>
           {title}
         </Text>
-        <RoundedButton
-          text={saveString}
-          textColor={primaryColor}
-          backgroundColor={secondaryColor}
-          onPress={() => {
-            if (isFavorite) {
-              removeVote({variables: {movieId: id}})
-                .then(() => refetch())
-                .catch(e => console.error(e))
-            } else {
-              addVote({variables: {movieId: id}})
-                .then(() => refetch())
-                .catch(e => console.error(e))
+        {
+          !loading &&
+          <RoundedButton
+            text={submitText}
+            textColor={primaryColor}
+            backgroundColor={secondaryColor}
+            onPress={() => toggleVote()}
+            icon={
+              <Ionicons
+                name='md-checkmark-circle'
+                size={20}
+                color={primaryColor}
+                style={styles.saveIcon}
+              />
             }
-          }}
-          icon={
-            <Ionicons
-              name='md-checkmark-circle'
-              size={20}
-              color={primaryColor}
-              style={styles.saveIcon}
-            />
-          }
-        />
+          />
+        }
         <View style={styles.statRow}>
           <Text style={styles.stat}>Category</Text>
           <Text style={styles.stat}>{category.title}</Text>
