@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect} from 'react';
 import AuthLoading from '../screens/AuthLoading';
 import {useQuery} from "@apollo/react-hooks";
-import {PROFILE_QUERY} from "../graphql/authQuery";
+import {PROFILE_QUERY} from "../graphql/auth/authQuery";
 
 const Stack = createStackNavigator()
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();

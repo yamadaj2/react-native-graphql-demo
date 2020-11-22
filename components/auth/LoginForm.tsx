@@ -5,7 +5,7 @@ import RoundedButton from '../RoundedButtons';
 import {Ionicons} from '@expo/vector-icons';
 import {showMessage} from 'react-native-flash-message';
 import {useMutation} from '@apollo/react-hooks';
-import {SIGN_IN_MUTATION} from '../../graphql/authMutation';
+import {SIGN_IN_MUTATION} from '../../graphql/auth/authMutation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width} = Dimensions.get('window');
@@ -35,7 +35,7 @@ export default function LoginForm({ navigation } : any) {
   }
 
   return (
-    <View style={styles.inputContainer}>
+    <View>
       <View>
         <TextInput
           onChange={({target: {value}}) => setNameCredentials(value)}
@@ -80,10 +80,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     left: 20,
     zIndex: 8,
-  },
-  inputContainer: {
-    flex: 0.3,
-    justifyContent: 'space-between',
   },
   input: {
     width: width - 40,

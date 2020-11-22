@@ -11,3 +11,6 @@ web-build/
 
 .DS_Store
 /.idea
+/.env
+/.env.development
+/.env.production

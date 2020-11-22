@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import {lightBlack, themeBlue, white} from '../constants/Colors';
 
-export default function Tag(props) {
+export default function Tag(props: any) {
   const {title, onPress, selected} = props;
   return (
     <View style={styles.container}>

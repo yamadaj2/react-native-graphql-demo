@@ -6,7 +6,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {showMessage} from 'react-native-flash-message';
 import {useMutation} from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {SIGN_UP_MUTATION} from '../../graphql/authMutation';
+import {SIGN_UP_MUTATION} from '../../graphql/auth/authMutation';
 
 const {width} = Dimensions.get('window');
 
