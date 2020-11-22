@@ -5,8 +5,8 @@ import RoundedButton from '../RoundedButtons';
 import {Ionicons} from '@expo/vector-icons';
 import {showMessage} from 'react-native-flash-message';
 import {useMutation} from '@apollo/react-hooks';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SIGN_UP_MUTATION} from '../../graphql/auth/authMutation';
+import {logIn} from '../../utilities/authUtilities';
 
 const {width} = Dimensions.get('window');
 
@@ -18,10 +18,7 @@ export default function SignUpForm({ navigation } : any) {
   const [signUp] = useMutation(SIGN_UP_MUTATION, {
     async onCompleted({signUp}) {
       const {token} = signUp;
-      try {
-        await AsyncStorage.setItem('token', token);
-        navigation.replace('Profile')
-      } catch (e) { console.error(e) }
+      logIn(token).then(navigation.replace('Profile'))
     }
   });
 
@@ -70,7 +67,7 @@ export default function SignUpForm({ navigation } : any) {
           icon={<Ionicons name='md-checkmark-circle' size={20} color={white} style={styles.saveIcon}/>}
           textColor={white}
           backgroundColor={themeBlue}
-          onPress={() => handleSignUp()}
+          onPress={handleSignUp}
         />
       </View>
     </View>

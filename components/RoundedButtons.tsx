@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function RoundedButton(props: {text: String, icon: String, textColor: String, backgroundColor: any, onPress: Function}) {
-  const { text, icon, textColor, backgroundColor, onPress } = props;
+export default function RoundedButton(props: {disabled: Boolean, text: String, icon: String, textColor: String, backgroundColor: any, onPress: Function}) {
+  const { disabled, text, icon, textColor, backgroundColor, onPress } = props;
   const color: any = textColor || 'white';
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={onPress}
       style={[styles.wrapper, { backgroundColor: backgroundColor || 'transparent' }]}
     >

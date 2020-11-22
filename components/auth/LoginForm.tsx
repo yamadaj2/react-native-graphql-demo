@@ -6,7 +6,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {showMessage} from 'react-native-flash-message';
 import {useMutation} from '@apollo/react-hooks';
 import {SIGN_IN_MUTATION} from '../../graphql/auth/authMutation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {logIn} from '../../utilities/authUtilities';
 
 const {width} = Dimensions.get('window');
 
@@ -18,10 +18,9 @@ export default function LoginForm({ navigation } : any) {
   const [signIn] = useMutation(SIGN_IN_MUTATION, {
     async onCompleted({signIn}) {
       const {token} = signIn;
-      try {
-        await AsyncStorage.setItem('token', token);
-        navigation.replace('Profile')
-      } catch (e) { console.error(e) }
+      logIn(token)
+        .then(() => navigation.replace('Profile'))
+        .catch(e => console.error(e))
     }
   });
 

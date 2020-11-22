@@ -56,11 +56,11 @@ export default function Detail({route }: Props) {
 
     if (isFavorite) {
       removeVote(params)
-        .then(() => refetch())
+        .then(refetch)
         .catch(e => errorMessage(e))
     } else {
       addVote(params)
-        .then(() => refetch())
+        .then(refetch)
         .catch(e => errorMessage(e))
     }
   }
@@ -72,23 +72,21 @@ export default function Detail({route }: Props) {
         <Text numberOfLines={2} style={[styles.text, {textAlign: 'center'}]}>
           {title}
         </Text>
-        {
-          !loading &&
-          <RoundedButton
-            text={submitText}
-            textColor={primaryColor}
-            backgroundColor={secondaryColor}
-            onPress={() => toggleVote()}
-            icon={
-              <Ionicons
-                name='md-checkmark-circle'
-                size={20}
-                color={primaryColor}
-                style={styles.saveIcon}
-              />
-            }
-          />
-        }
+        <RoundedButton
+          disabled={loading}
+          text={submitText}
+          textColor={primaryColor}
+          backgroundColor={secondaryColor}
+          onPress={() => toggleVote()}
+          icon={
+            <Ionicons
+              name='md-checkmark-circle'
+              size={20}
+              color={primaryColor}
+              style={styles.saveIcon}
+            />
+          }
+        />
         <View style={styles.statRow}>
           <Text style={styles.stat}>Category</Text>
           <Text style={styles.stat}>{category.title}</Text>
