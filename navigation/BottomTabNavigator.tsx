@@ -90,7 +90,9 @@ function TabBarIcon(props: { name: string; color: string }) {
 }
 
 const profileMenu = ({navigation}) => {
-  const name = navigation.dangerouslyGetState()?.routes?.find(route => route.name === 'Movies')?.params?.currentUser.username || '';
+  let name = '';
+  try { name = navigation.dangerouslyGetState()?.routes?.find(route => route.name === 'Movies')?.params?.currentUser.username || '';
+  } catch (e) {console.error(e)}
 
   return <CircleDropdown
     text={name[0]?.toUpperCase()}

@@ -23,7 +23,6 @@ export default function Tag(props: any) {
 const styles = StyleSheet.create({
   container: {
     margin: 6,
-    // height: 40,
   },
   tag: {
     flexDirection: 'row',

@@ -11,7 +11,6 @@ import {logIn} from '../../utilities/authUtilities';
 const {width} = Dimensions.get('window');
 
 export default function LoginForm({ navigation } : any) {
-  const [username, setUsername] = useState('');
   const [nameCredentials, setNameCredentials] = useState('');
   const [password, setPassword] = useState('');
 

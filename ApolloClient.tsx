@@ -1,10 +1,14 @@
 import { ApolloClient } from 'apollo-client';
 import {InMemoryCache } from 'apollo-cache-inmemory';
 import {HttpLink} from 'apollo-link-http';
-import {ApolloLink, Observable, split} from 'apollo-link';
+import {ApolloLink, Observable} from 'apollo-link';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from 'react-native-dotenv';
 
-const BASE_URL = 'http://localhost:4000/graphql';
+console.log('%c -------------------------','background-color: white; color: black')
+console.log(process.env.NODE_ENV)
+console.log('%c -------------------------','background-color: white; color: black')
+
 
 const httpLink = new HttpLink({
   credentials: 'include',
@@ -35,9 +39,7 @@ const requestLink = new ApolloLink(
         })
         .catch(observer.error.bind(observer))
 
-      return () => {
-        if (handle) handle.unsubscribe()
-      }
+      return () => handle && handle.unsubscribe()
     })
 );
 
