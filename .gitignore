@@ -14,5 +14,4 @@ web-build/
 /.env
 /.env.development
 /.env.production
-/constants/env.tsx
 yarn-error.log

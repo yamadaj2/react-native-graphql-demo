@@ -5,11 +5,6 @@ import {ApolloLink, Observable} from 'apollo-link';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from 'react-native-dotenv';
 
-console.log('%c -------------------------','background-color: white; color: black')
-console.log(process.env.NODE_ENV)
-console.log('%c -------------------------','background-color: white; color: black')
-
-
 const httpLink = new HttpLink({
   credentials: 'include',
   uri: BASE_URL,
