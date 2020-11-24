@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
   Image,
   View,
   ScrollView,
-  Dimensions,
+  Dimensions, ActivityIndicator,
 } from 'react-native';
 import RoundedButton from '../components/RoundedButtons';
 import {Ionicons} from '@expo/vector-icons';
@@ -38,30 +38,36 @@ export default function Detail({route }: Props) {
   const {data, refetch, loading} = useQuery(PROFILE_QUERY);
   const [addVote] = useMutation(ADD_VOTE);
   const [removeVote] = useMutation(REMOVE_VOTE);
+  const [submitted, setSubmitted] = useState(false);
 
   const {params: {movie: {id, title, description, imageUrl, category}}} = route;
 
   const isFavorite = !!(data?.currentUser?.votes.find(({movie}) => movie.id === id))
-
   const primaryColor = isFavorite ? themeBlue : white;
   const secondaryColor = isFavorite ? white : themeBlue;
   const submitText = `${isFavorite ? 'Remove' : 'Add'} Vote`;
+  const voteButtonDisabled = loading || submitted;
 
   const toggleVote = () => {
-    const params = {variables: {movieId: id}};
-    const errorMessage = e => {
-      console.error(e)
-      showMessage({message: 'Something went wrong', type: 'danger'})
-    }
+    setSubmitted(true)
+    if (!loading) {
+      const params = {variables: {movieId: id}};
+      const errorMessage = e => {
+        console.error(e)
+        showMessage({message: 'Something went wrong', type: 'danger'})
+      }
 
-    if (isFavorite) {
-      removeVote(params)
-        .then(refetch)
-        .catch(e => errorMessage(e))
-    } else {
-      addVote(params)
-        .then(refetch)
-        .catch(e => errorMessage(e))
+      if (isFavorite) {
+        removeVote(params)
+          .then(refetch)
+          .catch(e => errorMessage(e))
+          .finally(() => setSubmitted(false))
+      } else {
+        addVote(params)
+          .then(refetch)
+          .catch(e => errorMessage(e))
+          .finally(() => setSubmitted(false))
+      }
     }
   }
 
@@ -72,12 +78,13 @@ export default function Detail({route }: Props) {
         <Text numberOfLines={2} style={[styles.text, {textAlign: 'center'}]}>
           {title}
         </Text>
+
         <RoundedButton
-          disabled={loading}
-          text={submitText}
+          text={voteButtonDisabled ? <ActivityIndicator /> : submitText}
+          disabled={voteButtonDisabled}
           textColor={primaryColor}
           backgroundColor={secondaryColor}
-          onPress={() => toggleVote()}
+          onPress={toggleVote}
           icon={
             <Ionicons
               name='md-checkmark-circle'
@@ -87,6 +94,7 @@ export default function Detail({route }: Props) {
             />
           }
         />
+
         <View style={styles.statRow}>
           <Text style={styles.stat}>Category</Text>
           <Text style={styles.stat}>{category.title}</Text>
