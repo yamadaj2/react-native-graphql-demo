@@ -10,11 +10,11 @@
   },
   "babel": {
     "presets": [
-      "module:react-native-dotenv",
       "@babel/preset-typescript",
       "module:metro-react-native-babel-preset"
     ],
     "plugins": [
+      "module:react-native-dotenv",
       "transform-inline-environment-variables"
     ]
   },
@@ -68,7 +68,6 @@
     "@types/react-native": "~0.63.2",
     "jest-expo": "~39.0.0",
     "path": "^0.12.7",
-    "react-native-dotenv": "^2.4.2",
     "typescript": "~3.9.5"
   },
   "private": true

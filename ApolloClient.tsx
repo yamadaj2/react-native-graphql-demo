@@ -3,11 +3,10 @@ import {InMemoryCache } from 'apollo-cache-inmemory';
 import {HttpLink} from 'apollo-link-http';
 import {ApolloLink, Observable} from 'apollo-link';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL} from 'react-native-dotenv';
 
 const httpLink = new HttpLink({
   credentials: 'include',
-  uri: BASE_URL,
+  uri: 'https://graphql-movies-api-course.herokuapp.com/graphql',
 })
 
 const request = async (operation: any) => {
