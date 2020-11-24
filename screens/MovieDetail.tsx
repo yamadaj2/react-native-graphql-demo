@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  Image,
   View,
-  ScrollView,
-  Dimensions, ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import RoundedButton from '../components/RoundedButtons';
 import {Ionicons} from '@expo/vector-icons';
